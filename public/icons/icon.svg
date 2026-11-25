@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4E141E"/>
+      <stop offset="45%" stop-color="#6D2932"/>
+      <stop offset="100%" stop-color="#882C3D"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3D1"/>
+      <stop offset="40%" stop-color="#F5D076"/>
+      <stop offset="85%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#AA821C"/>
+    </linearGradient>
+    <linearGradient id="goldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5D076" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#AA821C" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)"/>
+  
+  <!-- Subtle inner ornamental frame -->
+  <rect x="28" y="28" width="456" height="456" rx="80" fill="none" stroke="url(#goldBorder)" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <rect x="38" y="38" width="436" height="436" rx="72" fill="none" stroke="url(#goldBorder)" stroke-width="1.5"/>
+
+  <!-- Corner accents -->
+  <circle cx="56" cy="56" r="4" fill="#F5D076"/>
+  <circle cx="456" cy="56" r="4" fill="#F5D076"/>
+  <circle cx="56" cy="456" r="4" fill="#F5D076"/>
+  <circle cx="456" cy="456" r="4" fill="#F5D076"/>
+
+  <!-- Four-point star sparkles -->
+  <g fill="url(#goldGrad)">
+    <!-- Top Right Sparkle -->
+    <path d="M 370 145 Q 370 170 395 170 Q 370 170 370 195 Q 370 170 345 170 Q 370 170 370 145 Z"/>
+    <!-- Small Top Left Sparkle -->
+    <path d="M 140 180 Q 140 195 155 195 Q 140 195 140 210 Q 140 195 125 195 Q 140 195 140 180 Z" transform="scale(0.8) translate(30, 20)"/>
+    <!-- Small Bottom Right Sparkle -->
+    <path d="M 360 330 Q 360 342 372 342 Q 360 342 360 354 Q 360 342 348 342 Q 360 342 360 330 Z"/>
+  </g>
+
+  <!-- Central 'f.' Luxury Monogram -->
+  <g id="brand-monogram" fill="url(#goldGrad)">
+    <!-- Stylized 'f' -->
+    <path d="M 248 138 C 218 138 196 156 196 188 C 196 208 206 220 216 230 L 180 230 L 180 256 L 214 256 L 202 348 C 196 394 220 404 246 404 C 258 404 270 401 278 398 L 272 374 C 266 376 258 378 252 378 C 238 378 230 370 234 346 L 244 256 L 282 256 L 286 230 L 247 230 C 243 216 236 198 236 182 C 236 166 244 158 258 158 C 268 158 276 162 282 166 L 290 144 C 280 140 266 138 248 138 Z"/>
+    <!-- Dot of the 'f.' -->
+    <circle cx="316" cy="358" r="16" fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- 'GOLD & FASHION' Subtext -->
+  <text x="256" y="440" font-family="'Plus Jakarta Sans', 'Playfair Display', serif, sans-serif" font-size="24" font-weight="700" letter-spacing="6" fill="url(#goldGrad)" text-anchor="middle">
+    GOLD &amp; FASHION
+  </text>
+</svg>

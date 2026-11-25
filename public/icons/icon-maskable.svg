@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGradM" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4E141E"/>
+      <stop offset="45%" stop-color="#6D2932"/>
+      <stop offset="100%" stop-color="#882C3D"/>
+    </linearGradient>
+    <linearGradient id="goldGradM" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3D1"/>
+      <stop offset="40%" stop-color="#F5D076"/>
+      <stop offset="85%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#AA821C"/>
+    </linearGradient>
+    <linearGradient id="goldBorderM" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F5D076" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#AA821C" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Full-bleed background for maskable icon (no border radius) -->
+  <rect width="512" height="512" fill="url(#bgGradM)"/>
+  
+  <!-- Safe zone inner frame (safe zone is r=205 / inset 51px) -->
+  <circle cx="256" cy="256" r="198" fill="none" stroke="url(#goldBorderM)" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- Four-point star sparkles within safe area -->
+  <g fill="url(#goldGradM)">
+    <path d="M 355 160 Q 355 180 375 180 Q 355 180 355 200 Q 355 180 335 180 Q 355 180 355 160 Z"/>
+    <path d="M 155 190 Q 155 202 167 202 Q 155 202 155 214 Q 155 202 143 202 Q 155 202 155 190 Z"/>
+    <path d="M 350 320 Q 350 330 360 330 Q 350 330 350 340 Q 350 330 340 330 Q 350 330 350 320 Z"/>
+  </g>
+
+  <!-- Scaled slightly for 80% safe zone margin -->
+  <g transform="translate(256, 256) scale(0.85) translate(-256, -256)">
+    <!-- Stylized 'f' -->
+    <path fill="url(#goldGradM)" d="M 248 138 C 218 138 196 156 196 188 C 196 208 206 220 216 230 L 180 230 L 180 256 L 214 256 L 202 348 C 196 394 220 404 246 404 C 258 404 270 401 278 398 L 272 374 C 266 376 258 378 252 378 C 238 378 230 370 234 346 L 244 256 L 282 256 L 286 230 L 247 230 C 243 216 236 198 236 182 C 236 166 244 158 258 158 C 268 158 276 162 282 166 L 290 144 C 280 140 266 138 248 138 Z"/>
+    <!-- Dot of the 'f.' -->
+    <circle cx="316" cy="358" r="16" fill="url(#goldGradM)"/>
+
+    <!-- 'GOLD & FASHION' Subtext -->
+    <text x="256" y="440" font-family="'Plus Jakarta Sans', 'Playfair Display', serif, sans-serif" font-size="24" font-weight="700" letter-spacing="6" fill="url(#goldGradM)" text-anchor="middle">
+      GOLD &amp; FASHION
+    </text>
+  </g>
+</svg>
