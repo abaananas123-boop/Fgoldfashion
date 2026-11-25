@@ -100,6 +100,7 @@ import {
 } from './components/CatalogManagerModal';
 import { PhilosophySection } from './components/PhilosophySection';
 import { OrderTrackingModal } from './components/OrderTrackingModal';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 import { Footer } from './components/Footer';
 
 const STORAGE_KEYS = {
@@ -1979,8 +1980,7 @@ export default function App() {
       ? siteConfig.hero.shortcutTiles
       : buildDefaultShortcutTiles(
           availableCategories,
-          siteConfig.checkout.freeShippingThreshold,
-          true
+          siteConfig.checkout.freeShippingThreshold
         );
 
   const handleSaveShortcutTile = (
@@ -2403,7 +2403,7 @@ export default function App() {
         onSubmitSearch={() => scrollToCatalog()}
         cartCount={cartCount}
         onOpenCart={openBagDrawer}
-        onOpenOrderTracking={() => {
+        onOpenAccount={() => {
           setTrackingLookupSeed(latestOrder?.orderNumber ?? '');
           setIsTrackingModalOpen(true);
         }}
@@ -2554,10 +2554,6 @@ export default function App() {
             isHomeEditMode={isAdmin && isHomeEditMode}
             onExploreCatalog={() => scrollToCatalog('All')}
             onViewBestsellers={() => scrollToCatalog('Boutique')}
-            onOpenOrderTracking={() => {
-              setTrackingLookupSeed(latestOrder?.orderNumber ?? '');
-              setIsTrackingModalOpen(true);
-            }}
             onScrollToVouchers={() => {
               const el = document.getElementById('vouchers-strip');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -2614,9 +2610,6 @@ export default function App() {
             }
             onToggleHeroEyebrow={() =>
               handleToggleVisibilityKey('showHeroEyebrow')
-            }
-            onToggleTrackOrderCta={() =>
-              handleToggleVisibilityKey('showHeroTrackOrderCta')
             }
             onToggleShareCta={() => handleToggleVisibilityKey('showHeroShareCta')}
             onToggleShortcutsStrip={() =>
@@ -3185,8 +3178,8 @@ export default function App() {
           onNavigateLink={navigateSiteLink}
           latestOrder={latestOrder}
           onViewOrderReceipt={openOrderReceipt}
-          onOpenOrderTracking={(orderNumber) => {
-            setTrackingLookupSeed(orderNumber || latestOrder?.orderNumber || '');
+          onOpenAccount={() => {
+            setTrackingLookupSeed(latestOrder?.orderNumber ?? '');
             setIsTrackingModalOpen(true);
           }}
           isAdmin={isAdmin}
@@ -3284,9 +3277,9 @@ export default function App() {
         onClearCart={() => setCartItems([])}
         latestOrder={latestOrder}
         onOrderConfirmed={handleOrderConfirmed}
-        onTrackOrder={(orderNumber) => {
+        onOpenAccount={(orderNumber) => {
           setIsCartOpen(false);
-          setTrackingLookupSeed(orderNumber);
+          setTrackingLookupSeed(orderNumber || '');
           setIsTrackingModalOpen(true);
         }}
         initialView={drawerInitialView}
@@ -3296,30 +3289,16 @@ export default function App() {
         <BottomAppBar
           storeName={siteConfig.storeName}
           cartCount={cartCount}
-          wishlistCount={wishlist.length}
           categories={availableCategories}
           whatsappNumber={siteConfig.socialLinks.whatsappNumber}
           whatsappMessage={siteConfig.socialLinks.whatsappMessage}
-          latestOrder={latestOrder}
-          isAdmin={isAdmin}
           onScrollHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           onSelectCategory={(cat) => scrollToCatalog(cat)}
           onOpenCart={openBagDrawer}
-          onOpenOrderTracking={() => {
+          onOpenAccount={() => {
             setTrackingLookupSeed(latestOrder?.orderNumber ?? '');
             setIsTrackingModalOpen(true);
           }}
-          onOpenReceipt={openOrderReceipt}
-          onOpenSavedWishlist={() => {
-            setShowSavedOnly(true);
-            scrollToCatalog();
-          }}
-          onOpenStoreManager={() => {
-            setManagerTab('products');
-            setProductModalIntent(null);
-            setIsManagerOpen(true);
-          }}
-          onAdminSignIn={handleAdminSignIn}
           onScrollToNewsletter={() => {
             const el = document.getElementById('footer-concierge');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -3335,6 +3314,8 @@ export default function App() {
         storeName={siteConfig.storeName}
         storeWhatsappNumber={siteConfig.socialLinks.whatsappNumber}
       />
+
+      <PWAInstallBanner />
 
       {isAdmin && (
         <>
