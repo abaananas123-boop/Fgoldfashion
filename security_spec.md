@@ -1,0 +1,28 @@
+# Security Specification & Red Team Audit — f. Gold & fashion
+
+## 1. Data Invariants
+1. Only the verified store administrator (`request.auth.token.email == 'abaananas123@gmail.com'` AND `request.auth.token.email_verified == true`) may create, update, or delete `/products/{productId}` documents.
+2. Only the verified store administrator may write `/settings/siteConfig` (top-level keys locked via `hasAll`/`hasOnly`, `categories` <= 40 items with <= 60 chars each, `subcategories` validated as a map, `accentColor` 7-char `#` hex, `headerBackgroundImage` <= 250000 chars, `headerTextTheme`, `homeTheme`, `homeLayout` map, `hero3dShowcase`, `homeSliders` <= 12, `customSections` <= 15, `featuresSection`, `socialLinks` with `whatsappNumber` <= 30 & `whatsappMessage` <= 300 & `showOnProductPage` bool & `accounts` <= 20, `hero`, `storeName` 1..100 chars, `checkout`, `customBoxes` <= 24, `customLinks` <= 30, `visibility` map, and server-verified `updatedAt == request.time`).
+3. Storefront customers may read `/products` and `/settings/siteConfig`, and may submit validated new `/orders/{orderId}` documents with `status == 'Confirmed — Preparing Shipment'`, optional `customerUid == request.auth.uid` (when signed in), and server-verified `createdTimestamp == request.time`.
+4. Customers may only `get` or `list` `/orders/{orderId}` documents whose `customerUid == request.auth.uid` (strictly scoped via `where('customerUid', '==', auth.uid)`). Guest orders and other customers' orders remain completely isolated; updating or deleting `/orders` is strictly restricted to `isAdmin()`.
+17. Signed-in customers may create, read, update, and delete solely their own `/customerProfiles/{userId}` document (`request.auth.uid == userId`, enforcing `uid == request.auth.uid`, valid email/displayName, bounded optional address/phone/photoUrl, and `request.time` timestamps). Listing all customer profiles is strictly denied to non-admins.
+
+## 2. "Dirty Dozen" Adversarial Payloads
+1. **Unauthenticated Product Creation**: Anonymous client attempts `setDoc('/products/hack-1', {...})` -> `PERMISSION_DENIED` (`isAdmin()` fails).
+2. **Non-Admin Customer Product Creation**: Signed-in Google user `customer@gmail.com` attempts `setDoc('/products/hack-2', {...})` -> `PERMISSION_DENIED` (`email != 'abaananas123@gmail.com'`).
+3. **Unverified Admin Email Spoof**: Signed-in user with `email == 'abaananas123@gmail.com'` and `email_verified == false` attempts write -> `PERMISSION_DENIED`.
+4. **Customer Modifying Social / WhatsApp Links**: Signed-in customer attempts `updateDoc('/settings/siteConfig', { socialLinks: { whatsappNumber: '03000000000' } })` -> `PERMISSION_DENIED`.
+5. **Shadow / Ghost Field Injection on Product or Subscriber**: Client sends `{ email: 'a@b.com', source: 'footer', subscribedAt: serverTimestamp(), isAdmin: true }` -> `PERMISSION_DENIED` (`hasOnly` rejects ghost key).
+6. **Negative or Zero Price Manipulation**: Payload sets `price: -500` on product or `total: -1` on order -> `PERMISSION_DENIED`.
+7. **ID Poisoning Attack**: Document ID contains `/` or exceeds 128 chars -> `PERMISSION_DENIED` (`isValidId` fails).
+8. **Customer Listing All Orders, Other Customer Profiles, Pending Reviews, RestockRequests, or Subscribers**: Non-admin runs `getDocs(collection(db, 'orders'))` without `customerUid == auth.uid`, `getDocs(collection(db, 'customerProfiles'))`, `getDocs(collection(db, 'orderTracking'))`, `getDocs(collection(db, 'reviews'))` (unfiltered), `getDocs(collection(db, 'restockRequests'))`, or `getDocs(collection(db, 'subscribers'))` -> `PERMISSION_DENIED`.
+9. **Customer Reading Another User's Order, Profile, RestockRequest, or Subscriber PII**: Customer A runs `getDoc(doc(db, 'orders', 'customerB-order'))` or `getDoc(doc(db, 'customerProfiles', 'customerB-uid'))` -> `PERMISSION_DENIED`.
+10. **Customer Forging `customerUid`, Order Status, Review Approval, or Increasing Stock**: Customer A submits an order claiming `customerUid: 'customerB'`, submits a review with `status: 'approved'`, updates `/products/p1` changing `price` or increasing `stockQuantity`, or calls `updateDoc('/orderTracking/FG-4102', ...)` -> `PERMISSION_DENIED`.
+11. **Timestamp Spoofing on Order, CustomerProfile, OrderTracking, Review, RestockRequest, or Subscriber**: Client submits past/future timestamp instead of `serverTimestamp()` -> `PERMISSION_DENIED`.
+12. **Unbounded Array / Invalid Payload Exhaustion**: Order submitted with `items: []` or >50 items, tracking submitted with >25 events, review photo >250KB, or invalid email string -> `PERMISSION_DENIED`.
+
+## 3. Red Team Conflict Audit
+- **Identity Spoofing**: Checked (`isAdmin()` requires `request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'abaananas123@gmail.com'`; customer orders/profiles bind `customerUid`/`uid` to `request.auth.uid`).
+- **State Shortcutting**: Checked (non-admin order & tracking creation locked to `'Confirmed — Preparing Shipment'`; non-admin reviews locked to `'pending'`; stock updates strictly monotonic decrease only).
+- **Resource Poisoning**: Checked (`isValidId()` on all doc IDs, `.size()` bounds and regex checks on strings including `subscribers.email`, `trackingUrl` `https?://` scheme, `review.photoUrl`, and bounded arrays).
+- **PII Isolation**: Checked (`orders` strictly scoped to `customerUid == request.auth.uid` or `isAdmin()`, `customerProfiles` strictly scoped to `uid == request.auth.uid` or `isAdmin()`, `restockRequests` and `subscribers` get/list/delete strictly Admin-only; `/orderTracking` split collection contains zero customer name, phone, email, or street address).

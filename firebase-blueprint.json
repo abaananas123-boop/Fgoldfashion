@@ -1,0 +1,451 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Catalog product across all store departments sold in PKR.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "subtitle": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "subcategory": { "type": "string", "maxLength": 60 },
+        "price": { "type": "number" },
+        "volume": { "type": "string", "maxLength": 60 },
+        "stockQuantity": { "type": "number" },
+        "statusNote": { "type": "string", "maxLength": 60 },
+        "imageUrl": { "type": "string", "minLength": 1, "maxLength": 350000 },
+        "videoUrl": { "type": "string", "maxLength": 2000 },
+        "mediaGallery": { "type": "array" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "skinTypes": { "type": "string", "maxLength": 200 },
+        "finish": { "type": "string", "maxLength": 200 },
+        "keyActives": { "type": "array" },
+        "fullIngredients": { "type": "string", "maxLength": 2000 },
+        "howToUse": { "type": "string", "maxLength": 1000 },
+        "variants": { "type": "array" },
+        "sortOrder": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "subtitle",
+        "category",
+        "price",
+        "volume",
+        "imageUrl",
+        "description",
+        "skinTypes",
+        "finish",
+        "keyActives",
+        "fullIngredients",
+        "howToUse",
+        "variants",
+        "updatedAt"
+      ]
+    },
+    "SiteConfig": {
+      "title": "SiteConfig",
+      "description": "Front-page editorial content, PKR checkout rules, WhatsApp number, Google Review link, SEO metadata, team members, and social media accounts managed exclusively by the store admin.",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "footerTagline": { "type": "string", "maxLength": 300 },
+        "accentColor": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$", "maxLength": 7 },
+        "headerBackgroundImage": { "type": "string", "maxLength": 250000 },
+        "headerTextTheme": { "type": "string", "enum": ["dark", "light"] },
+        "navLabels": { "type": "object" },
+        "categories": { "type": "array" },
+        "subcategories": { "type": "object" },
+        "hero": { "type": "object" },
+        "hero3dShowcase": { "type": "object" },
+        "catalogSection": { "type": "object" },
+        "featuresSection": { "type": "object" },
+        "philosophy": { "type": "object" },
+        "checkout": { "type": "object" },
+        "socialLinks": { "type": "object" },
+        "seo": { "type": "object" },
+        "teamMembers": { "type": "array" },
+        "customBoxes": { "type": "array" },
+        "customLinks": { "type": "array" },
+        "homeSliders": { "type": "array" },
+        "customSections": { "type": "array" },
+        "homeTheme": { "type": "object" },
+        "visibility": { "type": "object" },
+        "homeLayout": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "storeName",
+        "footerTagline",
+        "accentColor",
+        "navLabels",
+        "hero",
+        "catalogSection",
+        "philosophy",
+        "checkout",
+        "socialLinks",
+        "updatedAt"
+      ]
+    },
+    "OrderRecord": {
+      "title": "OrderRecord",
+      "description": "Customer purchase order with PKR totals and delivery details.",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "minLength": 3, "maxLength": 32 },
+        "createdAt": { "type": "string", "maxLength": 40 },
+        "createdTimestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "shippingCost": { "type": "number" },
+        "total": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["wallet", "card", "cod"] },
+        "shipping": { "type": "object" },
+        "customerUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" }
+      },
+      "required": [
+        "orderNumber",
+        "createdAt",
+        "createdTimestamp",
+        "status",
+        "items",
+        "subtotal",
+        "discount",
+        "shippingCost",
+        "total",
+        "paymentMethod",
+        "shipping"
+      ]
+    },
+    "Subscriber": {
+      "title": "Subscriber",
+      "description": "Newsletter email subscriber collected from the storefront footer.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+        },
+        "source": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "subscribedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["email", "source", "subscribedAt"]
+    },
+    "MediaAsset": {
+      "title": "MediaAsset",
+      "description": "Reusable product photo or video uploaded to the store manager media library.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 350000
+        },
+        "mediaKind": {
+          "type": "string",
+          "enum": ["image", "video"]
+        },
+        "categoryTag": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "title", "url", "mediaKind", "categoryTag", "createdAt", "updatedAt"]
+    },
+    "Hero3DShowcase": {
+      "title": "Hero3DShowcase",
+      "description": "Hero interactive 3D showcase carousel configuration, custom slide items, lighting intensity, shadow depth, texts, and box appearance managed by the store admin.",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "eyebrow": { "type": "string", "maxLength": 80 },
+        "heading": { "type": "string", "maxLength": 140 },
+        "description": { "type": "string", "maxLength": 300 },
+        "helperText": { "type": "string", "maxLength": 160 },
+        "mode": { "type": "string", "enum": ["auto-products", "custom"] },
+        "frameStyle": { "type": "string", "enum": ["gold", "frameless", "obsidian", "silver"] },
+        "aspectShape": { "type": "string", "enum": ["portrait", "square", "landscape"] },
+        "depthLevel": { "type": "string", "enum": ["subtle", "medium", "bold"] },
+        "boxTheme": { "type": "string", "enum": ["transparent", "ivory", "warm", "obsidian", "gold"] },
+        "customBgColor": { "type": "string", "maxLength": 30 },
+        "customTextColor": { "type": "string", "maxLength": 30 },
+        "customBorderColor": { "type": "string", "maxLength": 30 },
+        "autoPlay": { "type": "boolean" },
+        "intervalSeconds": { "type": "number" },
+        "lightingIntensity": { "type": "number" },
+        "shadowDepth": { "type": "number" },
+        "showCaptions": { "type": "boolean" },
+        "showSubtitle": { "type": "boolean" },
+        "showCounter": { "type": "boolean" },
+        "showArrows": { "type": "boolean" },
+        "showStepper": { "type": "boolean" },
+        "showHelperText": { "type": "boolean" },
+        "items": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["mode", "frameStyle", "aspectShape", "depthLevel", "autoPlay", "items"]
+    },
+    "HeroHighlightSlider": {
+      "title": "HeroHighlightSlider",
+      "description": "Customizable highlight picture and product slider rendered below the Highlight Boxes strip, managed exclusively by the store admin.",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "eyebrow": { "type": "string", "maxLength": 80 },
+        "heading": { "type": "string", "maxLength": 140 },
+        "description": { "type": "string", "maxLength": 300 },
+        "layout": { "type": "string", "enum": ["carousel", "spotlight", "compact"] },
+        "aspectShape": { "type": "string", "enum": ["portrait", "square", "landscape", "wide"] },
+        "boxTheme": { "type": "string", "enum": ["ivory", "warm", "obsidian", "gold"] },
+        "customBgColor": { "type": "string", "maxLength": 30 },
+        "customTextColor": { "type": "string", "maxLength": 30 },
+        "customBorderColor": { "type": "string", "maxLength": 30 },
+        "autoPlay": { "type": "boolean" },
+        "intervalSeconds": { "type": "number" },
+        "showCaptions": { "type": "boolean" },
+        "showArrows": { "type": "boolean" },
+        "items": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "enabled",
+        "eyebrow",
+        "heading",
+        "layout",
+        "aspectShape",
+        "boxTheme",
+        "autoPlay",
+        "intervalSeconds",
+        "showCaptions",
+        "showArrows",
+        "items",
+        "updatedAt"
+      ]
+    },
+    "PublicMediaAsset": {
+      "title": "PublicMediaAsset",
+      "description": "Compressed image or short video persisted in Firestore so storefront media renders reliably across deployments and external app links.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "dataUrl": {
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 750000
+        },
+        "mediaKind": {
+          "type": "string",
+          "enum": ["image", "video"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "dataUrl", "mediaKind", "createdAt", "updatedAt"]
+    },
+    "OrderTracking": {
+      "title": "OrderTracking",
+      "description": "PII-free public order tracking projection keyed by exact Order Number (get-by-ID only; no customer name, phone, email, or street address stored).",
+      "type": "object",
+      "properties": {
+        "orderNumber": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 32,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "status": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "courierName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "trackingNumber": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "trackingUrl": { "type": "string", "minLength": 8, "maxLength": 300 },
+        "estimatedDelivery": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "destinationCity": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "itemCount": { "type": "number", "minimum": 1, "maximum": 500 },
+        "orderDateLabel": { "type": "string", "minLength": 3, "maxLength": 40 },
+        "updatedAtLabel": { "type": "string", "minLength": 3, "maxLength": 60 },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 25
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "orderNumber",
+        "status",
+        "destinationCity",
+        "itemCount",
+        "orderDateLabel",
+        "updatedAtLabel",
+        "events",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ProductReview": {
+      "title": "ProductReview",
+      "description": "Customer review with optional compressed photo feedback; public submissions default to pending and require admin approval before display.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "authorName": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "rating": { "type": "number", "minimum": 1, "maximum": 5 },
+        "comment": { "type": "string", "minLength": 5, "maxLength": 600 },
+        "fitNote": { "type": "string", "maxLength": 80 },
+        "photoUrl": { "type": "string", "maxLength": 250000 },
+        "status": { "type": "string", "enum": ["pending", "approved"] },
+        "createdAtLabel": { "type": "string", "minLength": 3, "maxLength": 40 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "productId",
+        "productName",
+        "authorName",
+        "rating",
+        "comment",
+        "status",
+        "createdAtLabel",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "RestockRequest": {
+      "title": "RestockRequest",
+      "description": "Customer WhatsApp/email notification request for sold-out products; public creation only, reads/deletes restricted strictly to admin.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "variantName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "contact": { "type": "string", "minLength": 5, "maxLength": 120 },
+        "createdAtLabel": { "type": "string", "minLength": 3, "maxLength": 40 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "productId",
+        "productName",
+        "variantName",
+        "contact",
+        "createdAtLabel",
+        "createdAt"
+      ]
+    },
+    "CustomerProfile": {
+      "title": "CustomerProfile",
+      "description": "Private customer account profile containing only that signed-in customer's verified email, display name, delivery address, and store follow preference.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 32 },
+        "defaultAddress": { "type": "string", "maxLength": 300 },
+        "defaultCity": { "type": "string", "maxLength": 80 },
+        "defaultPostalCode": { "type": "string", "maxLength": 20 },
+        "photoUrl": { "type": "string", "maxLength": 250000 },
+        "followedStore": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Publicly readable catalog products; admin manages full edits, while checkout may atomically decrement stockQuantity."
+    },
+    "/settings/siteConfig": {
+      "schema": { "$ref": "#/entities/SiteConfig" },
+      "description": "Publicly readable storefront configuration and social links; writes strictly restricted to the verified store administrator."
+    },
+    "/settings/hero3dShowcase": {
+      "schema": { "$ref": "#/entities/Hero3DShowcase" },
+      "description": "Publicly readable Hero 3D showcase carousel & lighting settings; writes strictly restricted to the verified store administrator."
+    },
+    "/settings/heroHighlightSlider": {
+      "schema": { "$ref": "#/entities/HeroHighlightSlider" },
+      "description": "Publicly readable Highlight picture and product slider rendered below the Highlight Boxes strip; writes strictly restricted to the verified store administrator."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/OrderRecord" },
+      "description": "Customer orders containing shipping PII; creation allowed with strict schema validation, reads restricted strictly to the owning signed-in customer (customerUid == request.auth.uid) or verified store administrator."
+    },
+    "/customerProfiles/{userId}": {
+      "schema": { "$ref": "#/entities/CustomerProfile" },
+      "description": "Strictly private per-customer profile, saved email details, and default shipping address; accessible only to the matching signed-in user or store administrator."
+    },
+    "/orderTracking/{orderId}": {
+      "schema": { "$ref": "#/entities/OrderTracking" },
+      "description": "Zero-PII order tracking projection readable strictly by exact Order ID (`get` only; `list`, updates, and deletes restricted to the verified store administrator)."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/ProductReview" },
+      "description": "Customer product reviews with photo support; only approved reviews are publicly readable, while moderation/deletion/listing all reviews is strictly Admin-only."
+    },
+    "/restockRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/RestockRequest" },
+      "description": "Restock notification requests containing customer phone/email PII; public create-only, read/list/delete strictly Admin-only."
+    },
+    "/subscribers/{subscriberId}": {
+      "schema": { "$ref": "#/entities/Subscriber" },
+      "description": "Newsletter subscriber emails containing customer PII; public creation allowed with strict email and server-timestamp validation, reads and deletes restricted strictly to the verified store administrator."
+    },
+    "/mediaLibrary/{mediaId}": {
+      "schema": { "$ref": "#/entities/MediaAsset" },
+      "description": "Manager-only reusable gallery of uploaded product photos and videos."
+    },
+    "/publicMedia/{mediaId}": {
+      "schema": { "$ref": "#/entities/PublicMediaAsset" },
+      "description": "Publicly readable (get-by-ID only) cloud-persisted storefront photos and short videos; writes/listing/deletes restricted strictly to the verified store administrator."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "f. Gold & fashion",
+  "description": "We provide best products according to your cravings about fashion and style that fit your personal preferences perfectly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  :root {
+    --accent: #6D2932;
+    --page-bg: #FAFAFA;
+    --surface-bg: #FFFFFF;
+    --text-primary: #141413;
+    --text-muted: #5A5A56;
+    --border-subtle: #E4E4E0;
+    --btn-bg: #141413;
+    --btn-text: #FFFFFF;
+    --heading-font: "Cormorant Garamond", Georgia, serif;
+    --body-font: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    --heading-weight: 500;
+    --heading-style: normal;
+  }
+
+  html {
+    font-family: var(--body-font);
+    scroll-behavior: smooth;
+    background-color: var(--page-bg);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, .font-display, .font-serif {
+    font-family: var(--heading-font);
+  }
+
+  .theme-heading {
+    font-family: var(--heading-font);
+    font-weight: var(--heading-weight);
+    font-style: var(--heading-style);
+    text-transform: var(--heading-transform, none);
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.storefront-canvas {
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  font-family: var(--body-font);
+  font-weight: var(--body-weight, 400);
+}
+
+.storefront-canvas h1,
+.storefront-canvas h2,
+.storefront-canvas h3,
+.storefront-canvas .font-serif {
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  font-style: var(--heading-style);
+  text-transform: var(--heading-transform, none);
+}
+
+.storefront-canvas[data-heading-scale="compact"] h1 {
+  font-size: clamp(1.9rem, 3.3vw, 2.85rem);
+}
+
+.storefront-canvas[data-heading-scale="large"] h1 {
+  font-size: clamp(2.6rem, 5.2vw, 4.2rem);
+}
+
+.storefront-canvas .bg-\[\#FAFAFA\] {
+  background-color: var(--page-bg);
+}
+
+.storefront-canvas .bg-white {
+  background-color: var(--surface-bg);
+}
+
+.storefront-canvas .text-\[\#141413\] {
+  color: var(--text-primary);
+}
+
+.storefront-canvas .text-\[\#5A5A56\] {
+  color: var(--text-muted);
+}
+
+.storefront-canvas .border-\[\#E4E4E0\] {
+  border-color: var(--border-subtle);
+}
+
+.storefront-canvas .bg-\[\#141413\] {
+  background-color: var(--btn-bg);
+}
+
+.storefront-canvas .bg-\[\#141413\].text-white {
+  color: var(--btn-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
